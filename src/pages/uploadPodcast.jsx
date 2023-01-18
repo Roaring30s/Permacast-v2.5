@@ -37,7 +37,6 @@ import {
   PODCAST_COVER_MIN_LEN, PODCAST_COVER_MAX_LEN, CONTENT_TYPE_VALUES
 } from '../constants';
 //import { providers } from "ethers";
-//import { genAPI } from 'arseeding-js';
 
 import { CheckAuthHook } from "../utils/ui";
 import useEthTransactionHook from "../utils/ethereum";

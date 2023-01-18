@@ -90,3 +90,27 @@ export default async function getCroppedImg(
     }, 'image/jpeg')
   })
 }
+
+const sharp = require('sharp');
+
+/**
+ * Resizes an image to a 64 kb file size
+ *
+ * @param {Event} event - The event object from a form submit event
+ * @returns {Promise<Buffer>} - A promise that resolves to a buffer with the resized image
+ */
+const resizeImage = async (event) => {
+  event.preventDefault();
+  const image = event.target.files[0];
+  let resizedImage = await sharp(image)
+    .resize(640, 480)
+    .toBuffer();
+  while (resizedImage.length > 64 * 1024) {
+    resizedImage = await sharp(image)
+      .resize(640, 480)
+      .toBuffer();
+  }
+  // here you can use the resizedImage 
+  // to send to the server or store it 
+  // in the state of the parent component
+}

@@ -114,3 +114,35 @@ const resizeImage = async (event) => {
   // to send to the server or store it 
   // in the state of the parent component
 }
+
+
+export function reduceImageSize(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file); 
+
+    reader.onload = function() {
+      var image = new Image();
+      image.src = reader.result;
+
+      image.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, image.width, image.height);
+        var MAX_SIZE = 64 * 1024;
+        var quality = 1;
+        while (true) {
+            canvas.toBlob(function(blob) {
+                var fileSize = blob.size;
+                if (fileSize <= MAX_SIZE) {
+                    resolve(blob);
+                }
+                quality -= 0.1;
+            }, 'image/jpeg', quality);
+        }
+      };
+    };
+  });
+}
